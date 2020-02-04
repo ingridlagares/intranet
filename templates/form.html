@@ -1,0 +1,21 @@
+{% load app_filters %}
+
+<form method="post" novalidate>
+    {% csrf_token %}
+
+    {% for field in form.visible_fields %}
+        <div class="form-group">
+            <label class="control-label font-weight-bold d-block" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {% with node_str=field|form_field_tag %}
+                {{node_str|safe}}
+            {% endwith %}
+            {% for error in field.errors %}
+                <div class="invalid-feedback">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    
+    <button class="btn help-bg-danger text-white shadow-none px-5 mt-4" type="submit">Salvar</button>
+</form>

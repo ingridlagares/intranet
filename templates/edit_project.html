@@ -1,0 +1,57 @@
+{% extends 'dashboard.html' %}
+
+{% block custom_script %}
+{% endblock %}
+
+{% block info%}
+
+<div class="d-flex flex-column">
+  <div class="mt-4">
+    <div id="accordion">
+      <div class="help-shadow card">
+        <div class="card-header bg-white d-flex flex-row align-items-center justify-content-between">
+          <h5 class="mb-0 font-weight-bold text-dark py-2">Editar projeto</h5>
+          <div>
+          </div>
+        </div>
+        <div id="profile" data-parent="#accordion">
+          <div class="card-body">
+            <div class="mb-3">
+                <label class="control-label font-weight-bold">Integrante(s)</label>
+                <div class="d-flex flex-wrap mb-2">
+                    {% for entry in project.projetointegrante_set.all %}
+                        <div class="badge badge-pill-lg badge-dark mr-2 mb-2 d-flex justify-content-center align-items-center">
+                            <span>{{entry.integrante.first_name}} {{entry.integrante.last_name|default_if_none:""}}</span>
+                            {% if entry.integrante != project.coordenador %}
+                            <a href="{% url 'delete_project_member' project_pk=project.pk member_pk=entry.integrante.pk %}" class="link">
+                                <i class="material-icons-outlined text-white ml-2" style="font-size: 1rem;">clear</i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <form method="post" action="add_selected_member" class="d-flex position-relative">
+                    {% csrf_token %}
+                    <div id="select">
+                        <select name="non_members" class="help-select border-top-0 border-right-0 border-left-0 rounded-0 flex-grow-1">
+                            {% for nmember in non_members %}
+                                {% ifequal nmember.id selected_nmember.id %}
+                                    <option value="{{nmember.pk}}" selected="selected">{{nmember}}</option>
+                                {% else %}
+                                    <option value="{{nmember.pk}}">{{nmember}}</option>
+                                {% endifequal %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="ml-3 btn help-bg-danger text-white">Adicionar</button>
+                </form>
+            </div>
+            {% include "form.html" with form=form submit_message="Salvar" %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

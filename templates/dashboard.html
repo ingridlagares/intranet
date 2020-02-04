@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Home{% endblock %}
+
+{% block content %}
+
+<div class="d-flex flex-column h-100">
+    {% include "dashboard_header.html" with name=user.username role=user.title %}
+    <div class="container d-flex flex-row pt-5 flex-grow-1 help-mt-6">
+        <div class="col-md-4">
+            {% include "dashboard_menu.html" with menu_items=menu %}
+        </div>
+        <div class="col-md-8">
+            {% block info %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

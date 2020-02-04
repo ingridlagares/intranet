@@ -1,0 +1,122 @@
+.link {
+    text-decoration: none;
+    cursor: pointer;
+    color: inherit;
+}
+.link:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.help-shadow {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+    background-color: #ffffff;
+}
+
+.card-icons {
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 0;
+}
+
+.list {
+    list-style: none;
+    margin-bottom: 0;
+}
+
+.badge-pill-lg {
+    padding-right: 0.5rem !important;
+    padding-left: 0.5rem !important;
+    padding-top: 0.3rem !important;
+    padding-bottom: 0.3rem !important;
+}
+
+.input-underline {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #000000;
+    outline: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.flex-grow-1 {
+    flex-grow: 1;
+}
+
+.danger {
+    color: #850E0E !important;
+}
+.help-bg-danger {
+    background-color: #850E0E !important;
+}
+
+.fs-085 {
+    font-size: 0.85rem;
+}
+
+.help-mt-6 {
+    margin-top: 4rem;
+}
+
+.help-select {
+	position: relative;
+	font-family: inherit;
+	background-color: transparent;
+	padding: 10px 10px 10px 0;
+    font-size: 18px;
+    appearance: none;
+	-webkit-appearance: none;
+}
+
+#select:after {
+	position: absolute;
+	top: 25px;
+	right: 130px;
+	/* Styling the down arrow */
+	width: 0;
+	height: 0;
+	padding: 0;
+	content: '';
+	border-left: 6px solid transparent;
+	border-right: 6px solid transparent;
+	border-top: 6px solid rgba(0, 0, 0, 0.12);
+	pointer-events: none;
+}
+
+select > option {
+    background: white;
+ }
+#id_termino_month, #id_termino_year, #id_termino_day {
+    padding:3px;
+    margin: 0px 5px 0px 5px;
+    -webkit-border-radius:1px;
+    -moz-border-radius:1px;
+    border-radius:1px;
+    background:  #ffffff;
+    color:#555555;
+    border: 1px solid #ced4da;
+    display: inline-block;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+    cursor:pointer;
+}
+
+
+#id_inicio_month, #id_inicio_year, #id_inicio_day  {
+    padding:3px;
+    margin: 0px 5px 0px 5px;
+    -webkit-border-radius:1px;
+    -moz-border-radius:1px;
+    border-radius:1px;
+    background:  #ffffff;
+    color:#555555;
+    border:1px solid #ced4da;
+    display: inline-block;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+    cursor:pointer;
+}
+

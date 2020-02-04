@@ -1,0 +1,36 @@
+{% extends 'dashboard.html' %}
+
+{% block info%}
+
+<div class="d-flex flex-column">
+    <div class="mt-4">
+        <div>
+            <div class="help-shadow card">
+                <div class="card-header bg-white d-flex flex-row align-items-center justify-content-between">
+                    <h5 class="mb-0 font-weight-bold text-dark py-2">Meu perfil</h5>
+                    <div>
+                        <a href="{% url 'edit_profile' %}" class="link">
+                            <i class="material-icons-outlined mr-2">create</i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <div class="card-body">
+                        <label class="control-label font-weight-bold">Nome</label>
+                        <p class="form-control border-0 pl-0">{{user.first_name}}</p>
+                        <label class="control-label font-weight-bold">Sobrenome</label>
+                        <p class="form-control border-0 pl-0">{{user.last_name}}</p>
+                        <label class="control-label font-weight-bold">Email</label>
+                        <p class="form-control border-0 pl-0">{{user.email}}</p>
+                        <label class="control-label font-weight-bold">Telefone</label>
+                        <p class="form-control border-0 pl-0">{{user.phone}}</p>
+                        <label class="control-label font-weight-bold">Login</label>
+                        <p class="form-control border-0 pl-0">{{user.username}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

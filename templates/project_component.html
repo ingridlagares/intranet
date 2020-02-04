@@ -1,0 +1,47 @@
+<div class="help-shadow card mb-3">
+    <div class="card-header bg-white d-flex flex-row align-items-center justify-content-between">
+        <h5 class="mb-0 font-weight-bold text-dark py-2">{{project.titulo}}</h5>
+        <div class="col-3 card-icons p-0">
+            <a class="link rotate" data-toggle="collapse" data-target="#collapse{{ forloop.counter }}" aria-expanded="true">
+                <i class="material-icons-outlined">expand_more</i>
+            </a>
+            {% if editable %}
+                <a onclick="removeProject({{project.id}}, '{{project.titulo}}')" href="#" class="link">
+                    <i class="material-icons-outlined danger mr-2">delete</i>
+                </a>
+
+                <a href="{% url 'edit_project' pk=project.pk %}" class="link">
+                    <i class="material-icons-outlined mr-2">create</i>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    <div id="collapse{{ forloop.counter }}" class="collapse" data-parent="#accordion">
+        <div class="card-body fs-085 d-flex flex-column">
+            {% if project.descricao %}
+                <span class="mb-1">
+                    <b>Descrição: </b> {{project.descricao}}
+                </span>
+            {% endif %}
+            <span class="mb-1">
+                <b>Coordenador: </b> {{project.coordenador.first_name}} {{project.coordenador.last_name|default_if_none:""}}
+            </span>
+            <span class="mb-2">
+                <b>Integrante(s): </b>
+                <ul class="list">
+                {% for entry in project.projetointegrante_set.all %}
+                    <li>{{entry.integrante.first_name}} {{entry.integrante.last_name|default_if_none:""}}
+                {% endfor %}
+                </ul>
+            </span>
+            <span class="mb-1">
+                <b>Agência: </b> 
+                {% if project.agencia %}
+                    <span class="badge badge-pill-lg badge-dark">{{project.agencia}}</span>
+                {% else %}
+                    <span>(não informado)</span>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+</div>
