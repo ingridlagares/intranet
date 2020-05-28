@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from app import views
+from projectsApp import views
 
 # Edit Admin Page
 admin.site.site_header = 'Sistema de Gerenciamento de Projetos do DCC'
@@ -29,18 +29,18 @@ urlpatterns = [
     path('', views.home, name='home'),
 
     # Projects stuff
-    path('app/projects/', views.projects, name='projects'),
-    path('app/projects/<int:pk>/delete', views.delete_project,
+    path('projectsApp/projects/', views.projects, name='projects'),
+    path('projectsApp/projects/<int:pk>/delete', views.delete_project,
          name='delete_project'),
-    path('app/projects/<int:pk>/edit', views.edit_project,
+    path('projectsApp/projects/<int:pk>/edit', views.edit_project,
          name='edit_project'),
-    path('app/projects/create', views.create_project,
+    path('projectsApp/projects/create', views.create_project,
          name='create_project'),
-    path('app/projects/<int:project_pk>/delete_project_member/<int:member_pk>', views.delete_project_member, name='delete_project_member'),
-    path('app/projects/<int:project_pk>/add_project_member/<int:member_pk>', views.add_project_member, name='add_project_member'),
-    path('app/projects/<int:project_pk>/add_selected_member', views.add_selected_member, name='add_selected_member'),
+    path('projectsApp/projects/<int:project_pk>/delete_project_member/<int:member_pk>', views.delete_project_member, name='delete_project_member'),
+    path('projectsApp/projects/<int:project_pk>/add_project_member/<int:member_pk>', views.add_project_member, name='add_project_member'),
+    path('projectsApp/projects/<int:project_pk>/add_selected_member', views.add_selected_member, name='add_selected_member'),
     # Profile stuff
-    path('app/profile/', views.profile, name='profile'),
-    path('app/profile/edit', views.edit_profile,
+    path('projectsApp/profile/', views.profile, name='profile'),
+    path('projectsApp/profile/edit', views.edit_profile,
          name='edit_profile'),
 ]

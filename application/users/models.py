@@ -39,6 +39,7 @@ class CustomUser(AbstractUser):
         "Does the user have a specific permission?"
         return True
 
-    def has_module_perms(self, app_label):
+    def has_module_perms(self, projectsApp_label):
         "Does the user have permissions to view the app `app_label`?"
         return True
+

@@ -28,7 +28,8 @@ INSTALLED_APPS = [
     'django_select2',
     'django_python3_ldap',
     'users',
-    'app',
+    'projectsApp',
+    'mainApp',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'

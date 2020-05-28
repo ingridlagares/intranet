@@ -488,11 +488,11 @@ class ProjectTestCase(TestCase):
         self.assertEqual(len(pks), len(set(pks)))
         
     def test_projects_url_resolves_projects_view(self):
-        view = resolve('/app/projects/')
+        view = resolve('/projectsApp/projects/')
         self.assertEquals(view.func, projects)
 
     def test_create_project_url_resolves_create_project_view(self):
-        view = resolve('/app/projects/create')
+        view = resolve('/projectsApp/projects/create')
         self.assertEquals(view.func, create_project)
 
     def test_home_url_resolves_home_view(self):
@@ -500,11 +500,11 @@ class ProjectTestCase(TestCase):
         self.assertEquals(view.func, home)
 
     def test_profile_url_resolves_profile_view(self):
-        view = resolve('/app/profile/')
+        view = resolve('/projectsApp/profile/')
         self.assertEquals(view.func, profile)
 
     def test_edit_profile_url_resolves_edit_profile_view(self):
-        view = resolve('/app/profile/edit')
+        view = resolve('/projectsApp/profile/edit')
         self.assertEquals(view.func, edit_profile)
 
     # --------- Auxiliar methods ---------

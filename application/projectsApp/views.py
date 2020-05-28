@@ -22,7 +22,7 @@ SIDE_MENU_BASE = [
 @login_required
 def home(request):
     if request.user.title in ['prof', 'grad-cc', 'grad-si', 'grad-mc']:
-        return redirect('/app/projects/')
+        return redirect('/projectsApp/projects/')
     else:
         return redirect('/admin/')
 
@@ -48,7 +48,7 @@ def edit_project(request, pk):
         if form.is_valid():
             project = form.save(commit=False)
             project.save()
-            return redirect('/app/projects/')
+            return redirect('/projectsApp/projects/')
     else:
         form = ProjectEditForm(instance=project)
 
@@ -66,7 +66,7 @@ def delete_project(request, pk):
     project = get_object_or_404(Projeto, pk=pk)
     project.delete()
 
-    return redirect('/app/projects/')
+    return redirect('/projectsApp/projects/')
 
 
 @login_required
@@ -94,7 +94,7 @@ def create_project(request):
                 projeto=project
             )
 
-            return redirect('/app/projects/')
+            return redirect('/projectsApp/projects/')
     else:
         form = ProjectCreateForm(owner_pk=request.user.id)
 
@@ -112,7 +112,7 @@ def delete_project_member(request, project_pk, member_pk):
                                               projeto=project_pk)[0]
     member.delete()
 
-    return redirect('/app/projects/%d/edit' % project_pk)
+    return redirect('/projectsApp/projects/%d/edit' % project_pk)
 
 
 @login_required
@@ -121,7 +121,7 @@ def delete_project_member(request, project_pk, member_pk):
 def add_selected_member(request, project_pk):
     nonmember_pk = request.POST.get('non_members', None)
     return redirect(
-        '/app/projects/%d/add_project_member/%s' % (project_pk, nonmember_pk)
+        '/projectsApp/projects/%d/add_project_member/%s' % (project_pk, nonmember_pk)
     )
 
 
@@ -135,7 +135,7 @@ def add_project_member(request, project_pk, member_pk):
         integrante=integrante, projeto=projeto
     )
 
-    return redirect('/app/projects/%d/edit' % project_pk)
+    return redirect('/projectsApp/projects/%d/edit' % project_pk)
 
 
 # --------- PROFILE STUFF ---------
@@ -153,7 +153,7 @@ def edit_profile(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.save()
-            return redirect('/app/profile/')
+            return redirect('/projectsApp/profile/')
     else:
         form = UserEditForm(
             initial={
