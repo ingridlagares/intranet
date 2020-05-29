@@ -13,7 +13,7 @@ SECRET_KEY = 'ylkd@bhrf8ws886rzl4r(2z6s4b0@-09oo!jtxq8&hu9#j3d(a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['puma.dcc.ufmg.br', 'localhost']
 
 
 # Application definition
