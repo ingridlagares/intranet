@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Projeto, ProjetoIntegrante
+from .models import Projeto, ProjetoIntegrante, ProjetoArea
+from mainApp.models import Area
 from users.models import CustomUser
 from .forms import ProjectEditForm, ProjectCreateForm, UserEditForm
 from .decorators import teacher_required, project_owner_required

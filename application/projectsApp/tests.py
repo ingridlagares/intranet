@@ -1,4 +1,5 @@
-from .models import Projeto, Area, ProjetoArea, ProjetoIntegrante, path_and_rename_projeto
+from .models import Projeto, ProjetoArea, ProjetoIntegrante, path_and_rename_projeto
+from mainApp.models import Area
 from .forms import ProjectCreateForm, UserEditForm, ProjectEditForm
 from django.test import TestCase, Client
 from django.urls import reverse
@@ -173,7 +174,7 @@ class ProjectTestCase(TestCase):
         response = self.client.post(reverse('edit_profile'), data=SAMPLE_USER_FORM)
 
         self.assertEqual(response.status_code, 302)
-        
+
     def test_teachers_can_edit_their_profiles(self):
         self.client.login(username=TEACHER[0], password=TEACHER[1])
         response = self.client.post(reverse('edit_profile'), data=SAMPLE_USER_FORM)
@@ -259,7 +260,7 @@ class ProjectTestCase(TestCase):
         response = self.client.get(reverse('delete_project', kwargs={'pk': project.pk}))
 
         self.assertEqual(response.status_code, 302)
-    
+
     def test_edit_project_accessible_by_teacher(self):
         project = Projeto.objects.create(**SAMPLE_PROJECT, coordenador=self.teacher)
 
@@ -364,7 +365,7 @@ class ProjectTestCase(TestCase):
         project2 = Projeto.objects.create(**SAMPLE_PROJECT2, coordenador=self.other_teacher)
 
         ProjetoIntegrante.objects.create(projeto=project2, integrante=self.teacher)
-        
+
         user_projects = list(Projeto.objects.filter(coordenador=self.teacher))
         projects_user_is_in = list(map(
             lambda x: x.projeto,
@@ -373,30 +374,30 @@ class ProjectTestCase(TestCase):
         teacher_projects = set(user_projects + projects_user_is_in)
 
         self.assertEqual(teacher_projects, set([project, project2]))
-        
+
 
     def test_teachers_can_edit_their_projects(self):
         project = Projeto.objects.create(**SAMPLE_PROJECT, coordenador=self.teacher)
 
         self.client.login(username=TEACHER[0], password=TEACHER[1])
         response = self.client.post(reverse('edit_project', kwargs={ 'pk': project.pk }), data=SAMPLE_PROJECT2)
-        
+
         self.assertEqual(response.status_code, 302)
-    
+
     def test_teachers_can_create_projects(self):
         project = Projeto.objects.create(**SAMPLE_PROJECT, coordenador=self.teacher)
 
         self.assertIsNotNone(Projeto.objects.filter(pk=project.pk))
-        
-    
+
+
     def test_list_of_owned_projects_is_succesfully_returned_for_teacher(self):
         project1 = Projeto.objects.create(**SAMPLE_PROJECT, coordenador=self.teacher)
         project2 = Projeto.objects.create(**SAMPLE_PROJECT2, coordenador=self.teacher)
 
         user_owned_projects = list(Projeto.objects.filter(coordenador=self.teacher))
-        
+
         self.assertEqual(user_owned_projects, [project1, project2])
-        
+
     def test_list_of_projects_user_is_in_is_succesfully_returned_for_student(self):
         project1 = Projeto.objects.create(**SAMPLE_PROJECT, coordenador=self.teacher)
         project2 = Projeto.objects.create(**SAMPLE_PROJECT2, coordenador=self.teacher)
@@ -408,7 +409,7 @@ class ProjectTestCase(TestCase):
             lambda x: x.projeto,
             ProjetoIntegrante.objects.filter(integrante=self.student)
         ))
-        
+
         self.assertEqual(projects_student_is_in, [project1, project2])
 
     def test_project_objects_are_unique_even_with_the_same_info(self):
@@ -458,35 +459,35 @@ class ProjectTestCase(TestCase):
     def test_area_objects_are_unique_even_with_the_same_info(self):
         area = Area.objects.create(**SAMPLE_AREA)
         area2 = Area.objects.create(**SAMPLE_AREA)
-        
+
         self.assertFalse(area == area2)
-        
+
     def test_area_object_supports_inequality(self):
         area = Area.objects.create(**SAMPLE_AREA)
         area2 = Area.objects.create(**SAMPLE_AREA_2)
-        
+
         self.assertTrue(area != area2)
-        
+
     def test_area_objects_pks_are_unique(self):
         pks = [x.pk for x in Area.objects.all()]
 
         self.assertEqual(len(pks), len(set(pks)))
-        
+
     def test_project_objects_pks_are_unique(self):
         pks = [x.pk for x in Projeto.objects.all()]
 
         self.assertEqual(len(pks), len(set(pks)))
-        
+
     def test_project_area_objects_pks_are_unique(self):
         pks = [x.pk for x in ProjetoArea.objects.all()]
 
         self.assertEqual(len(pks), len(set(pks)))
-        
+
     def test_project_members_objects_pks_are_unique(self):
         pks = [x.pk for x in ProjetoIntegrante.objects.all()]
 
         self.assertEqual(len(pks), len(set(pks)))
-        
+
     def test_projects_url_resolves_projects_view(self):
         view = resolve('/projectsApp/projects/')
         self.assertEquals(view.func, projects)
@@ -515,5 +516,5 @@ class ProjectTestCase(TestCase):
         for field in fields_to_delete:
             if field in custom_form:
                 del custom_form[field]
-        
+
         return custom_form

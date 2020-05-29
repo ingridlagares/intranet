@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from mainApp import models as mainApp_models
 import os
 import time
 from uuid import uuid4
@@ -20,14 +21,6 @@ def path_and_rename_projeto(instance, filename):
         filename = '{}.{}'.format(uuid4().hex, ext)
     return os.path.join(upload_to, filename)
 
-
-class Area(models.Model):
-    nome = models.CharField(max_length=500, null=False, blank=False)
-
-    def __str__(self):
-        return self.nome
-
-
 class ProjetoIntegrante(models.Model):
     projeto = models.ForeignKey('Projeto', on_delete=models.CASCADE,
                                 blank=True, null=True)
@@ -41,7 +34,7 @@ class ProjetoIntegrante(models.Model):
 class ProjetoArea(models.Model):
     projeto = models.ForeignKey('Projeto', on_delete=models.PROTECT,
                                 blank=True, null=True)
-    area = models.ForeignKey('Area', on_delete=models.PROTECT,
+    area = models.ForeignKey(mainApp_models.Area, on_delete=models.PROTECT,
                              blank=True, null=True)
 
     def __str__(self):
