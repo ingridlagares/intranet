@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from projectsApp import views
+from django.views.generic.base import TemplateView
+from django.conf import settings
+from django.conf.urls.static import static  #used to upload images
 
 # Edit Admin Page
 admin.site.site_header = 'Sistema de Gerenciamento de Projetos do DCC'
@@ -43,4 +46,4 @@ urlpatterns = [
     path('projectsApp/profile/', views.profile, name='profile'),
     path('projectsApp/profile/edit', views.edit_profile,
          name='edit_profile'),
-]
+] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)

@@ -45,7 +45,7 @@ def edit_project(request, pk):
                   ).order_by('first_name', 'last_name', 'email')
 
     if request.method == "POST":
-        form = ProjectEditForm(data=request.POST, instance=project)
+        form = ProjectEditForm(request.POST, request.FILES, instance = project)
         if form.is_valid():
             project = form.save(commit=False)
             project.save()
@@ -74,7 +74,7 @@ def delete_project(request, pk):
 @teacher_required
 def create_project(request):
     if request.method == "POST":
-        form = ProjectCreateForm(data=request.POST, owner_pk=request.user.id)
+        form = ProjectCreateForm(request.POST, request.FILES, owner_pk = request.user.id)
         if form.is_valid():
             project_members = form.cleaned_data['project_members']
             project = form.save(commit=False)
