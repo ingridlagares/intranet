@@ -5,7 +5,10 @@ from users.models import CustomUser
 from .forms import ProjectEditForm, ProjectCreateForm, UserEditForm
 from .decorators import teacher_required, project_owner_required
 from django.contrib.auth.decorators import login_required
-
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.views.generic import (CreateView, DetailView, ListView, TemplateView,
+                                  UpdateView)
 SIDE_MENU_BASE = [
     {
         "name": "Meus projetos",
@@ -20,19 +23,32 @@ SIDE_MENU_BASE = [
 ]
 
 
-@login_required
-def home(request):
-    if request.user.title in ['prof', 'grad-cc', 'grad-si', 'grad-mc']:
-        return redirect('/projectsApp/projects/')
-    else:
-        return redirect('/admin/')
-
-
 def logout(request):
     logout(request)
 
 
 # --------- TEACHER-ONLY STUFF ---------
+
+class projectEditView(UpdateView):
+    model = Projeto
+    template_name = 'edit_project.html'
+    form_class = ProjectEditForm
+    success_url = '/projectsApp/projects/'
+
+    @method_decorator(teacher_required)
+    def dispatch(self, *args, **kwargs):
+        return super(projectEditView, self).dispatch(*args, **kwargs)
+"""
+    def get_context_data(self, **kwargs):
+        pass
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.created_by = self.request.user
+        obj.save()
+        return http.HttpResponseRedirect(self.get_success_url())
+"""
+"""
 @login_required
 @teacher_required
 @project_owner_required('pk')
@@ -58,7 +74,7 @@ def edit_project(request, pk):
     context = {'project': project, 'form': form, 'non_members': non_members, 'menu': side_menu_items}
 
     return render(request, 'edit_project.html', context)
-
+"""
 
 @login_required
 @teacher_required
@@ -171,7 +187,7 @@ def edit_profile(request):
                   {'form': form, 'menu': side_menu_items})
 
 
-# --------- PROJECTS STUFF ---------
+# --------- PROJECTS STUFF ---------#
 
 @login_required
 def projects(request):

@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from projectsApp import views
+from projectsApp import views as projectsViews
+from mainApp import views as mainViews
 from django.views.generic.base import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static  #used to upload images
@@ -29,21 +30,22 @@ admin.site.index_title = 'Intranet DCC'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('', views.home, name='home'),
+    path('', mainViews.HomepageManage.as_view(), name='home'),
 
     # Projects stuff
-    path('projectsApp/projects/', views.projects, name='projects'),
-    path('projectsApp/projects/<int:pk>/delete', views.delete_project,
+    path('projectsApp/projects/', projectsViews.projects, name='projects'),
+    path('projectsApp/projects/<int:pk>/delete', projectsViews.delete_project,
          name='delete_project'),
-    path('projectsApp/projects/<int:pk>/edit', views.edit_project,
+    path('projectsApp/projects/<int:pk>/edit', projectsViews.projectEditView.as_view(),
          name='edit_project'),
-    path('projectsApp/projects/create', views.create_project,
+    path('projectsApp/projects/create', projectsViews.create_project,
          name='create_project'),
-    path('projectsApp/projects/<int:project_pk>/delete_project_member/<int:member_pk>', views.delete_project_member, name='delete_project_member'),
-    path('projectsApp/projects/<int:project_pk>/add_project_member/<int:member_pk>', views.add_project_member, name='add_project_member'),
-    path('projectsApp/projects/<int:project_pk>/add_selected_member', views.add_selected_member, name='add_selected_member'),
+    path('projectsApp/projects/<int:project_pk>/delete_project_member/<int:member_pk>', projectsViews.delete_project_member, name='delete_project_member'),
+    path('projectsApp/projects/<int:project_pk>/add_project_member/<int:member_pk>', projectsViews.add_project_member, name='add_project_member'),
+    path('projectsApp/projects/<int:project_pk>/add_selected_member', projectsViews.add_selected_member, name='add_selected_member'),
+
     # Profile stuff
-    path('projectsApp/profile/', views.profile, name='profile'),
-    path('projectsApp/profile/edit', views.edit_profile,
+    path('projectsApp/profile/', projectsViews.profile, name='profile'),
+    path('projectsApp/profile/edit', projectsViews.edit_profile,
          name='edit_profile'),
 ] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)

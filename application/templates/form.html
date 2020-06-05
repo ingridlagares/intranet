@@ -6,10 +6,16 @@
     {% for field in form.visible_fields %}
 
         <div class="form-group">
-          {% if field.field.widget.input_type == "file" %}
-           {{field}}
-          {% else %}
             <label class="control-label font-weight-bold d-block" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {% if field.field.widget.input_type == "file" %}
+            <p><br>Atual:<br>
+              <a href"/media/{{field.value}}">
+                <img src="/media/{{field.value}}" alt="" style="height:64px;">
+              </a><br>
+              <input type="checkbox" name="{{ field.html_name }}-clear" id="{{ field.html_name }}-clear_id">
+              <label for={{ field.html_name }}>Excluir</label><br>
+              Mudar:<input type="file" class="filestyle"  name="{{ field.html_name }}" id="{{ field.id_for_label }}"></p>
+            {% else %}
               {% with node_str=field|form_field_tag %}
                 {{node_str|safe}}
               {% endwith %}
