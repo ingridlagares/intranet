@@ -42,7 +42,7 @@ def project_owner_required(param):
             if request.user == coordenador:
                 return function(request, *args, **kwargs)
             else:
-                return redirect(FORBIDDEN_URL)
+                return redirect('/')
 
         return wrap
 

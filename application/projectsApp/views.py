@@ -26,55 +26,27 @@ SIDE_MENU_BASE = [
 def logout(request):
     logout(request)
 
-
-# --------- TEACHER-ONLY STUFF ---------
-
+teacher_decorator = [project_owner_required('pk'), teacher_required, login_required]
+@method_decorator(teacher_decorator, name='dispatch')
 class projectEditView(UpdateView):
     model = Projeto
     template_name = 'edit_project.html'
     form_class = ProjectEditForm
     success_url = '/projectsApp/projects/'
+    context_object_name = 'project'
 
-    @method_decorator(teacher_required)
-    def dispatch(self, *args, **kwargs):
-        return super(projectEditView, self).dispatch(*args, **kwargs)
-"""
     def get_context_data(self, **kwargs):
-        pass
-
-    def form_valid(self, form):
-        obj = form.save(commit=False)
-        obj.created_by = self.request.user
-        obj.save()
-        return http.HttpResponseRedirect(self.get_success_url())
-"""
-"""
-@login_required
-@teacher_required
-@project_owner_required('pk')
-def edit_project(request, pk):
-    project = get_object_or_404(Projeto, pk=pk)
-
-    members = project.projetointegrante_set.all().values_list('id', flat=True)
-    non_members = CustomUser.objects.exclude(
+        context = super().get_context_data(**kwargs)
+        project = self.get_object()
+        members = project.projetointegrante_set.all().values_list('id', flat=True)
+        non_members = CustomUser.objects.exclude(
                     projetointegrante__in=members
                   ).order_by('first_name', 'last_name', 'email')
-
-    if request.method == "POST":
-        form = ProjectEditForm(request.POST, request.FILES, instance = project)
-        if form.is_valid():
-            project = form.save(commit=False)
-            project.save()
-            return redirect('/projectsApp/projects/')
-    else:
-        form = ProjectEditForm(instance=project)
-
-
-    side_menu_items = SIDE_MENU_BASE
-    context = {'project': project, 'form': form, 'non_members': non_members, 'menu': side_menu_items}
-
-    return render(request, 'edit_project.html', context)
-"""
+        side_menu_items = SIDE_MENU_BASE
+        context['project'] = project
+        context['menu'] = side_menu_items
+        context['non_members'] = non_members
+        return context
 
 @login_required
 @teacher_required
