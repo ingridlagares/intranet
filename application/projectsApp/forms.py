@@ -90,15 +90,3 @@ class ProjectEditForm(forms.ModelForm):
             'termino', 'agencia', 'programa', 'natureza',
             'situacao', 'processo', 'resolucao', 'imagem_divulgacao'
         ]
-
-
-class UserEditForm(forms.ModelForm):
-    first_name = forms.CharField(max_length=200, label='Nome')
-    last_name = forms.CharField(max_length=200, label='Sobrenome')
-    email = forms.EmailField(max_length=255, label='Email',
-                             widget=forms.EmailInput)
-    phone = forms.CharField(max_length=200, label='Telefone', required=False)
-
-    class Meta:
-        model = CustomUser
-        fields = ['first_name', 'last_name', 'email', 'phone']

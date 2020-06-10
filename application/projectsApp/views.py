@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Projeto, ProjetoIntegrante, ProjetoArea
 from mainApp.models import Area
 from users.models import CustomUser
-from .forms import ProjectEditForm, ProjectCreateForm, UserEditForm
+from .forms import ProjectEditForm, ProjectCreateForm
 from .decorators import teacher_required, project_owner_required
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views import View
+from django.contrib.auth.views import LogoutView
 from django.views.generic import (CreateView, DetailView, ListView, TemplateView,
                                   UpdateView)
 SIDE_MENU_BASE = [
@@ -21,10 +22,6 @@ SIDE_MENU_BASE = [
         "href": 'profile'
     }
 ]
-
-
-def logout(request):
-    logout(request)
 
 teacher_decorator = [project_owner_required('pk'), teacher_required, login_required]
 @method_decorator(teacher_decorator, name='dispatch')
@@ -125,39 +122,6 @@ def add_project_member(request, project_pk, member_pk):
     )
 
     return redirect('/projectsApp/projects/%d/edit' % project_pk)
-
-
-# --------- PROFILE STUFF ---------
-
-@login_required
-def profile(request):
-    side_menu_items = SIDE_MENU_BASE
-    return render(request, 'home.html', {'menu': side_menu_items})
-
-
-@login_required
-def edit_profile(request):
-    if request.method == 'POST':
-        form = UserEditForm(request.POST, instance=request.user)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.save()
-            return redirect('/projectsApp/profile/')
-    else:
-        form = UserEditForm(
-            initial={
-                'first_name': request.user.first_name,
-                'last_name': request.user.last_name,
-                'email': request.user.email,
-                'phone': request.user.phone
-            }
-        )
-
-    side_menu_items = SIDE_MENU_BASE
-
-    return render(request, 'edit_profile.html',
-                  {'form': form, 'menu': side_menu_items})
-
 
 # --------- PROJECTS STUFF ---------#
 

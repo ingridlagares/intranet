@@ -45,7 +45,7 @@ urlpatterns = [
     path('projectsApp/projects/<int:project_pk>/add_selected_member', projectsViews.add_selected_member, name='add_selected_member'),
 
     # Profile stuff
-    path('projectsApp/profile/', projectsViews.profile, name='profile'),
-    path('projectsApp/profile/edit', projectsViews.edit_profile,
+    path('projectsApp/profile/', mainViews.profile, name='profile'),
+    path('projectsApp/profilev/<int:pk>/edit', mainViews.pessoaEditView.as_view(),
          name='edit_profile'),
 ] + static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
