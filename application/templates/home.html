@@ -17,23 +17,23 @@
                 <div>
                     <div class="card-body">
                         <label class="control-label font-weight-bold">CPF</label>
-                        <p class="form-control border-0 pl-0">{{pessoa.cpf}}</p>
+                        <p class="form-control border-0 pl-0">{%if pessoa.cpf%}{{pessoa.cpf}}{% endif %}</p>
                         <label class="control-label font-weight-bold">Telefone</label>
-                        <p class="form-control border-0 pl-0">{{pessoa.phone}}</p>
+                        <p class="form-control border-0 pl-0">{%if pessoa.phone%}{{pessoa.phone}}{% endif %}</p>
                         <label class="control-label font-weight-bold">Email Pessoal</label>
-                        <p class="form-control border-0 pl-0">{{pessoa.email_pessoal}}</p>
+                        <p class="form-control border-0 pl-0">{%if pessoa.email_pessoal%}{{pessoa.email_pessoal}}{% endif %}</p>
                         <label class="control-label font-weight-bold">Facebook</label>
-                        <p class="form-control border-0 pl-0">{{pessoa.facebook}}</p>
+                        <p class="form-control border-0 pl-0">{%if pessoa.facebook%}{{pessoa.facebook}}{% endif %}</p>
                         <label class="control-label font-weight-bold">Instagram</label>
-                        <p class="form-control border-0 pl-0">{{pessoa.instagram}}</p>
+                        <p class="form-control border-0 pl-0">{%if pessoa.instagram%}{{pessoa.instagram}}{% endif %}</p>
                         <label class="control-label font-weight-bold">Linkedin</label>
-                        <p class="form-control border-0 pl-0">{{pessoa.linkedin}}</p>
+                        <p class="form-control border-0 pl-0">{%if pessoa.linkedin%}{{pessoa.linkedin}}{% endif %}</p>
                         <label class="control-label font-weight-bold">Twitter</label>
-                        <p class="form-control border-0 pl-0">{{pessoa.twitter}}</p>
+                        <p class="form-control border-0 pl-0">{%if pessoa.twitter%}{{pessoa.twitter}}{% endif %}</p>
                         <label class="control-label font-weight-bold">Estrangeiro</label>
-                        <p class="form-control border-0 pl-0">{{pessoa.estrangeiro}}</p>
+                        <p class="form-control border-0 pl-0">{%if pessoa.estrangeiro%} Sim {% else %} Não {%endif%}</p>
                         <label class="control-label font-weight-bold">Documento</label>
-                        <p class="form-control border-0 pl-0">{{pessoa.documento}}</p>
+                        <p class="form-control border-0 pl-0">{%if pessoa.documento%}{{pessoa.documento}}{% endif %}</p>
                     </div>
                 </div>
             </div>

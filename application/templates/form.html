@@ -15,7 +15,9 @@
               <input type="checkbox" name="{{ field.html_name }}-clear" id="{{ field.html_name }}-clear_id">
               <label for={{ field.html_name }}>Excluir</label><br>
               Mudar:<input type="file" class="filestyle"  name="{{ field.html_name }}" id="{{ field.id_for_label }}"></p>
-            {% else %}
+              {% elif field.field.widget.input_type == "checkbox" %}
+              <input type="checkbox" name="{{ field.html_name }}" {% if field.value%} checked {% endif%}>
+              {% else %}
               {% with node_str=field|form_field_tag %}
                 {{node_str|safe}}
               {% endwith %}

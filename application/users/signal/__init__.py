@@ -10,5 +10,4 @@ def create_pessoa(sender, instance, signal, *args, **kwargs):
         pessoa = Pessoa.objects.create(
            user=instance,
         )
-        print(pessoa)
 post_save.connect(create_pessoa, sender=CustomUser, dispatch_uid = "create_pessoa")
