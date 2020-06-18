@@ -33,9 +33,8 @@ urlpatterns = [
     path('', mainViews.HomepageManage.as_view(), name='home'),
 
     # Projects stuff
-    path('projectsApp/projects/', projectsViews.projects, name='projects'),
-    path('projectsApp/projects/<int:pk>/delete', projectsViews.delete_project,
-         name='delete_project'),
+    path('projectsApp/projects/', projectsViews.projectsListView.as_view(), name='projects'),
+    path('projectsApp/projects/<int:pk>/delete', projectsViews.projectDeleteView.as_view(),name='delete_project'),
     path('projectsApp/projects/<int:pk>/edit', projectsViews.projectEditView.as_view(),
          name='edit_project'),
     path('projectsApp/projects/create', projectsViews.create_project,

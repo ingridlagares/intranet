@@ -9,7 +9,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.contrib.auth.views import LogoutView
 from django.views.generic import (CreateView, DetailView, ListView, TemplateView,
-                                  UpdateView)
+                                  UpdateView, DeleteView)
 SIDE_MENU_BASE = [
     {
         "name": "Meus projetos",
@@ -22,6 +22,33 @@ SIDE_MENU_BASE = [
         "href": 'profile'
     }
 ]
+
+# --------- PROJECTS STUFF ---------#
+
+@method_decorator(login_required, name='dispatch')
+class projectsListView(ListView):
+    model = Projeto
+    template_name = 'projects.html'
+    context_object_name = 'projects'
+
+    def get_queryset(self):
+        user_projects = list(Projeto.objects.filter(coordenador=self.request.user.id))
+        projects_user_is_in = list(map(
+            lambda x: x.projeto,
+            ProjetoIntegrante.objects.filter(integrante=self.request.user.id)
+        ))
+
+        return set(user_projects + projects_user_is_in)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.title == 'prof':
+            isTeacher = True;
+        else:
+            isTeacher = False;
+        context['isTeacher'] = isTeacher
+        context['menu'] = SIDE_MENU_BASE
+        return context
 
 teacher_decorator = [project_owner_required('pk'), teacher_required, login_required]
 @method_decorator(teacher_decorator, name='dispatch')
@@ -45,15 +72,13 @@ class projectEditView(UpdateView):
         context['non_members'] = non_members
         return context
 
-@login_required
-@teacher_required
-@project_owner_required('pk')
-def delete_project(request, pk):
-    project = get_object_or_404(Projeto, pk=pk)
-    project.delete()
+@method_decorator(teacher_decorator, name='dispatch')
+class projectDeleteView(DeleteView):
+    model = Projeto
+    success_url = '/projectsApp/projects/'
 
-    return redirect('/projectsApp/projects/')
-
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
 @login_required
 @teacher_required
@@ -122,27 +147,3 @@ def add_project_member(request, project_pk, member_pk):
     )
 
     return redirect('/projectsApp/projects/%d/edit' % project_pk)
-
-# --------- PROJECTS STUFF ---------#
-
-@login_required
-def projects(request):
-    user_projects = list(Projeto.objects.filter(coordenador=request.user.id))
-    projects_user_is_in = list(map(
-        lambda x: x.projeto,
-        ProjetoIntegrante.objects.filter(integrante=request.user.id)
-    ))
-    if request.user.title == 'prof':
-        isTeacher = True;
-    else:
-        isTeacher = False;
-
-    projects = set(user_projects + projects_user_is_in)
-
-    side_menu_items = SIDE_MENU_BASE
-
-    return render(request, 'projects.html', {
-        'projects': projects,
-        'menu': side_menu_items,
-        'isTeacher': isTeacher
-    })

@@ -28,7 +28,7 @@ class Pessoa(models.Model):
     instagram = models.CharField(max_length=255, blank=True, null=True)
     linkedin = models.CharField(max_length=255, blank=True, null=True)
     twitter = models.CharField(max_length=255, blank=True, null=True)
-    estrangeiro = models.BooleanField()
+    estrangeiro = models.BooleanField(blank=True, null=True)
     documento = models.CharField(max_length=255, blank=True, null=True)
 
 
