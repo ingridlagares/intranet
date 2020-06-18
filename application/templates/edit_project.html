@@ -10,7 +10,7 @@
     <div id="accordion">
       <div class="help-shadow card">
         <div class="card-header bg-white d-flex flex-row align-items-center justify-content-between">
-          <h5 class="mb-0 font-weight-bold text-dark py-2">Editar projeto{{project}}</h5>
+          <h5 class="mb-0 font-weight-bold text-dark py-2">{{project}}</h5>
           <div>
           </div>
         </div>
@@ -23,7 +23,7 @@
                         <div class="badge badge-pill-lg badge-dark mr-2 mb-2 d-flex justify-content-center align-items-center">
                             <span>{{entry.integrante.first_name}} {{entry.integrante.last_name|default_if_none:""}}</span>
                             {% if entry.integrante != project.coordenador %}
-                            <a href="{% url 'delete_project_member' project_pk=project.pk member_pk=entry.integrante.pk %}" class="link">
+                            <a href="{% url 'delete_project_member' pk=entry.pk %}" class="link">
                                 <i class="material-icons-outlined text-white ml-2" style="font-size: 1rem;">clear</i>
                             </a>
                             {% endif %}

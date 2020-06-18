@@ -1,5 +1,4 @@
 """intranet URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.1/topics/http/urls/
 Examples:
@@ -39,7 +38,7 @@ urlpatterns = [
          name='edit_project'),
     path('projectsApp/projects/create', projectsViews.create_project,
          name='create_project'),
-    path('projectsApp/projects/<int:project_pk>/delete_project_member/<int:member_pk>', projectsViews.delete_project_member, name='delete_project_member'),
+    path('projectsApp/projects/delete_project_member/<int:pk>', projectsViews.delete_project_memberView.as_view(), name='delete_project_member'),
     path('projectsApp/projects/<int:project_pk>/add_project_member/<int:member_pk>', projectsViews.add_project_member, name='add_project_member'),
     path('projectsApp/projects/<int:project_pk>/add_selected_member', projectsViews.add_selected_member, name='add_selected_member'),
 

@@ -3,7 +3,7 @@ from .models import Projeto, ProjetoIntegrante, ProjetoArea
 from mainApp.models import Area
 from users.models import CustomUser
 from .forms import ProjectEditForm, ProjectCreateForm
-from .decorators import teacher_required, project_owner_required
+from .decorators import teacher_required, project_owner_required, project_owner_required_projetointegrante
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -114,17 +114,23 @@ def create_project(request):
 
     return render(request, 'create_project.html', context)
 
+delete_project_member = [
+    teacher_required,
+    login_required,
+    project_owner_required_projetointegrante('pk')
+]
 
-@login_required
-@teacher_required
-@project_owner_required('project_pk')
-def delete_project_member(request, project_pk, member_pk):
-    member = ProjetoIntegrante.objects.filter(integrante=member_pk,
-                                              projeto=project_pk)[0]
-    member.delete()
+@method_decorator(delete_project_member, name='dispatch')
+class delete_project_memberView(DeleteView):
+    model = ProjetoIntegrante
 
-    return redirect('/projectsApp/projects/%d/edit' % project_pk)
+    def get_success_url(self, **kwargs):
+        projetoIntegrante = self.get_object()
+        project_pk = projetoIntegrante.projeto.id
+        return '/projectsApp/projects/%d/edit' % project_pk
 
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
 @login_required
 @teacher_required

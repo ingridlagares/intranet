@@ -1,4 +1,4 @@
-from .models import Projeto
+from .models import Projeto, ProjetoIntegrante
 from django.shortcuts import redirect, get_object_or_404
 
 FORBIDDEN_URL = '/admin/'
@@ -38,6 +38,24 @@ def project_owner_required(param):
                 Projeto,
                 pk=kwargs[param]
             ).coordenador
+
+            if request.user == coordenador:
+                return function(request, *args, **kwargs)
+            else:
+                return redirect('/')
+
+        return wrap
+
+    return decorator
+
+# Access restriction for project owner pages
+def project_owner_required_projetointegrante(param):
+    def decorator(function):
+        def wrap(request, *args, **kwargs):
+            coordenador = get_object_or_404(
+                ProjetoIntegrante,
+                pk=kwargs[param]
+            ).projeto.coordenador
 
             if request.user == coordenador:
                 return function(request, *args, **kwargs)
