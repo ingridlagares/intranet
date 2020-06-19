@@ -80,6 +80,41 @@ class projectDeleteView(DeleteView):
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 
+
+@method_decorator([login_required,teacher_required], name='dispatch')
+class createProjectView(CreateView):
+    model = Projeto
+    template_name = 'create_project.html'
+    form_class = ProjectCreateForm
+    success_url = '/projectsApp/projects/'
+    context_object_name = 'project'
+    extra_context={'menu': SIDE_MENU_BASE}
+
+    def get_form_kwargs(self, **kwargs):
+        kwargs = super(createProjectView, self).get_form_kwargs()
+        kwargs['owner_pk'] = self.request.user.id
+        return kwargs
+
+    def form_valid(self, form):
+        project_members = form.cleaned_data['project_members']
+        project = form.save(commit=False)
+        project.coordenador = self.request.user
+        project.save()
+        #add new members
+        for new_member in project_members:
+            ProjetoIntegrante.objects.create(
+                integrante=new_member,
+                projeto=project
+            )
+            #add the project owner since it was not included in the list
+        ProjetoIntegrante.objects.create(
+            integrante=self.request.user,
+            projeto=project
+        )
+        return super(createProjectView, self).form_valid(form)
+
+
+
 @login_required
 @teacher_required
 def create_project(request):
