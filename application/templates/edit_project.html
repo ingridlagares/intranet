@@ -33,7 +33,7 @@
                 <form method="post" action="add_selected_member" class="d-flex position-relative">
                     {% csrf_token %}
                     <div id="select">
-                        <select name="non_members" class="help-select border-top-0 border-right-0 border-left-0 rounded-0 flex-grow-1">
+                        <select name="non_members" class="js-example-basic-single">
                             {% for nmember in non_members %}
                                 {% ifequal nmember.id selected_nmember.id %}
                                     <option value="{{nmember.pk}}" selected="selected">{{nmember}}</option>

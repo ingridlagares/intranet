@@ -50,8 +50,8 @@ class projectsListView(ListView):
         context['menu'] = SIDE_MENU_BASE
         return context
 
-teacher_decorator = [project_owner_required('pk'), teacher_required, login_required]
-@method_decorator(teacher_decorator, name='dispatch')
+teacher_owner_only = [project_owner_required('pk'), teacher_required, login_required]
+@method_decorator(teacher_owner_only, name='dispatch')
 class projectEditView(UpdateView):
     model = Projeto
     template_name = 'edit_project.html'
@@ -72,7 +72,7 @@ class projectEditView(UpdateView):
         context['non_members'] = non_members
         return context
 
-@method_decorator(teacher_decorator, name='dispatch')
+@method_decorator(teacher_owner_only, name='dispatch')
 class projectDeleteView(DeleteView):
     model = Projeto
     success_url = '/projectsApp/projects/'
@@ -80,8 +80,8 @@ class projectDeleteView(DeleteView):
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 
-
-@method_decorator([login_required,teacher_required], name='dispatch')
+teacher_requirement = [login_required,teacher_required]
+@method_decorator(teacher_requirement, name='dispatch')
 class createProjectView(CreateView):
     model = Projeto
     template_name = 'create_project.html'
@@ -113,47 +113,7 @@ class createProjectView(CreateView):
         )
         return super(createProjectView, self).form_valid(form)
 
-
-
-@login_required
-@teacher_required
-def create_project(request):
-    if request.method == "POST":
-        form = ProjectCreateForm(request.POST, request.FILES, owner_pk = request.user.id)
-        if form.is_valid():
-            project_members = form.cleaned_data['project_members']
-            project = form.save(commit=False)
-            project.coordenador = request.user
-            project.save()
-
-            # add selected new members
-            for new_member in project_members:
-                ProjetoIntegrante.objects.create(
-                    integrante=new_member,
-                    projeto=project
-                )
-
-            # add the project owner as a member since it was not included
-            # in the list
-            ProjetoIntegrante.objects.create(
-                integrante=request.user,
-                projeto=project
-            )
-
-            return redirect('/projectsApp/projects/')
-    else:
-        form = ProjectCreateForm(owner_pk=request.user.id)
-
-    side_menu_items = SIDE_MENU_BASE
-    context = {'form': form, 'menu': side_menu_items}
-
-    return render(request, 'create_project.html', context)
-
-delete_project_member = [
-    teacher_required,
-    login_required,
-    project_owner_required_projetointegrante('pk')
-]
+delete_project_member = [ teacher_required, login_required, project_owner_required_projetointegrante('pk')]
 
 @method_decorator(delete_project_member, name='dispatch')
 class delete_project_memberView(DeleteView):
